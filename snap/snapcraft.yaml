@@ -41,7 +41,7 @@ parts:
   detect-version:
     plugin: nil
     override-build: |
-      apt -y install jq
+      apt -y install jq curl
       VERSION=$(curl --silent "https://api.github.com/repos/derailed/k9s/releases/latest" | jq -r .tag_name)
       snapcraftctl set-version $VERSION
 
