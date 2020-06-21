@@ -1,0 +1,6 @@
+#!/bin/bash
+
+E="$(snapctl get editor)"
+P="$(snapctl get editor-params)"
+
+$E $P $@

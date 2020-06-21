@@ -1,0 +1,69 @@
+---
+
+name: k9s-nsg
+base: core20
+adopt-info: detect-version
+summary: K9s - Kubernetes CLI To Manage Your Clusters In Style!
+description: |
+  K9s provides a terminal UI to interact with your Kubernetes clusters.
+  The aim of this project is to make it easier to navigate, observe and
+  manage your applications in the wild. K9s continually watches
+  Kubernetes for changes and offers subsequent commands to interact with
+  your observed resources.
+
+  This is an unofficial build of k9s. I made this because I like snaps,
+  I just found k9s and liked it and the snap "k9s" is old.
+
+grade: stable
+confinement: strict
+
+plugs:
+  kube-config:
+    interface: personal-files
+    read:
+      - $HOME/.kube
+    write:
+      - $HOME/.kube/cache
+      - $HOME/.kube/http-cache
+  
+apps:
+  k9s-nsg:
+    command: bin/k9s-nsg
+    plugs:
+      - kube-config
+      - network
+
+parts:
+  detect-version:
+    plugin: nil
+    override-build: |
+      apt -y install jq
+      VERSION=$(curl --silent "https://api.github.com/repos/derailed/k9s/releases/latest" | jq -r .tag_name)
+      snapcraftctl set-version $VERSION
+
+  build-k9s:
+    plugin: go
+    source: https://github.com/derailed/k9s.git
+    source-tag: $SNAPCRAFT_PROJECT_VERSION
+    override-build: |
+      make test
+      make build
+      install $SNAPCRAFT_PART_BUILD/execs/k9s -D $SNAPCRAFT_PART_INSTALL/bin/k9s
+    build-packages:
+      - build-essential
+    after: [detect-version]
+
+  kubectl:
+    plugin: nil
+    override-pull: |
+      VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+      curl -LO https://storage.googleapis.com/kubernetes-release/release/${VERSION}/bin/linux/amd64/kubectl
+    override-build: |
+      install kubectl -D $SNAPCRAFT_PART_INSTALL/bin/kubectl
+
+  k9s-nsg:
+    plugin: dump
+    source: src
+    stage-packages:
+      - nano
+      - neovim

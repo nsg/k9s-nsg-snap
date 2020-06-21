@@ -1,0 +1,29 @@
+#!/bin/bash
+
+E="$(snapctl get editor)"
+
+if [[ $E == "nvim" ]]; then
+    snapctl set editor-params="-u $SNAP_DATA/.vimrc"
+else
+    snapctl set editor-params="--rcfile $SNAP_DATA/.nanorc"
+fi
+
+cat << EOF > $SNAP_DATA/.nanorc
+set autoindent
+set historylog
+set mouse
+set suspend
+set tabsize 2
+set tabstospaces
+
+## To include all existing syntax definitions, you can do:
+include "$SNAP/usr/share/nano/*.nanorc"
+EOF
+
+cat << EOF > $SNAP_DATA/.vimrc
+filetype plugin indent on
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+EOF

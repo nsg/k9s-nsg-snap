@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ ! -e $SNAP_USER_DATA/.kube ]; then
+    ln -s /home/$USER/.kube $SNAP_USER_DATA/.kube
+fi
+
+if ! head $SNAP_USER_DATA/.kube/config 2>&1 > /dev/null; then
+    echo "You need to grant this snap access to ~/.kube"
+    echo "To do that, type:"
+    echo "snap connect k9s-nsg:kube-config"
+
+    exit 1
+fi
+
+export K9SCONFIG=$SNAP_USER_DATA/.k9s
+export EDITOR=$SNAP/bin/editor
+
+$SNAP/bin/k9s $@
