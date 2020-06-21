@@ -60,6 +60,7 @@ parts:
   kubectl:
     plugin: nil
     override-pull: |
+      apt -y install curl
       VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
       curl -LO https://storage.googleapis.com/kubernetes-release/release/${VERSION}/bin/linux/amd64/kubectl
     override-build: |
