@@ -14,6 +14,10 @@ description: |
   This is an unofficial build of k9s. I made this because I like snaps,
   I just found k9s and liked it and the snap "k9s" is old.
 
+architectures:
+  - build-on: amd64
+    run-on: amd64
+
 grade: stable
 confinement: strict
 
