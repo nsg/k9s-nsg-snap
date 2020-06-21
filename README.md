@@ -1,4 +1,6 @@
 # k9s-nsg snap
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/k9s-nsg)
+
 
 This is an unofficial build of k9s. I made this because I like snaps, I just found k9s and liked it and the snap "k9s" is old.
 
