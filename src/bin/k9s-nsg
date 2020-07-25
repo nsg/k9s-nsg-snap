@@ -1,17 +1,26 @@
 #!/bin/bash
 
 find_a_file() {
-    find /home/$USER/.kube/ -maxdepth 1 -type f | head -1
+    find /home/$USER/.kube/ -maxdepth 1 -type f 2> /dev/null | head -1
+}
+
+bold() {
+    local bold='\e[1m'
+    local nc='\e[0m'
+    echo -ne "${bold}$@${nc}"
+}
+
+write() {
+    echo -e "$@" | fold -sw $COLUMNS
 }
 
 # Make sure that we have a .kube directory
 mkdir -p $SNAP_USER_DATA/.kube
 
 if [ ! -e "$(find_a_file)" ] || ! head "$(find_a_file)" 2>&1 > /dev/null; then
-    echo "You need to grant this snap read access to ~/.kube/"
-    echo "To do that, type:"
-    echo "snap connect k9s-nsg:kube-config"
-
+    write "You need to grant this snap access to the $(bold '~/.kube') directory:"
+    write "⮕  $(bold snap connect k9s-nsg:kube-config)"
+    write "Also make sure that the folder exists, and contains your Kubernetes configuration."
     exit 1
 fi
 
@@ -19,7 +28,7 @@ fi
 for config in /home/$USER/.kube/*; do
     if [ ! -d "$config" ] && grep -q apiVersion "$config"; then
         config_name="$(basename $config)"
-        ln -sfv "$config" "$SNAP_USER_DATA/.kube/$config_name"
+        ln -sf "$config" "$SNAP_USER_DATA/.kube/$config_name"
     fi
 done
 
