@@ -1,16 +1,27 @@
 #!/bin/bash
 
-if [ ! -e $SNAP_USER_DATA/.kube ]; then
-    ln -s /home/$USER/.kube $SNAP_USER_DATA/.kube
-fi
+find_a_file() {
+    find /home/$USER/.kube/ -maxdepth 1 -type f | head -1
+}
 
-if ! head $SNAP_USER_DATA/.kube/config 2>&1 > /dev/null; then
-    echo "You need to grant this snap access to ~/.kube"
+# Make sure that we have a .kube directory
+mkdir -p $SNAP_USER_DATA/.kube
+
+if [ ! -e "$(find_a_file)" ] || ! head "$(find_a_file)" 2>&1 > /dev/null; then
+    echo "You need to grant this snap read access to ~/.kube/"
     echo "To do that, type:"
     echo "snap connect k9s-nsg:kube-config"
 
     exit 1
 fi
+
+# Scan /home/$USER/.kube/ for configuration files
+for config in /home/$USER/.kube/*; do
+    if [ ! -d "$config" ] && grep -q apiVersion "$config"; then
+        config_name="$(basename $config)"
+        ln -sfv "$config" "$SNAP_USER_DATA/.kube/$config_name"
+    fi
+done
 
 export K9SCONFIG=$SNAP_USER_DATA/.k9s
 export EDITOR=$SNAP/bin/editor

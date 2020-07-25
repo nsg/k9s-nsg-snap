@@ -1,8 +1,7 @@
 # k9s-nsg snap
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/k9s-nsg)
 
-
-This is an unofficial build of k9s. I made this because I like snaps, I just found k9s and liked it and the snap "k9s" is old.
+This is an unofficial build of the software [k9s](https://github.com/derailed/k9s). The [official snap](https://snapcraft.io/k9s) is old and unmaintained. A discussion about that can be found [here](https://forum.snapcraft.io/t/personal-files-request-for-k9s-nsg/18378).
 
 ## Channels
 
@@ -10,7 +9,13 @@ If everything works `edge` should be an automatic successful build of the latest
 
 ## Install
 
-`snap install k9s-nsg` or `snap install --edge k9s-nsg`
+Install the latest promoted stable release with:
+
+* `snap install k9s-nsg`
+
+Get the latest release from the edge channel with:
+
+* `snap install --edge k9s-nsg`
 
 The snap will read your configuration from `~/.kube`, you need to grant it access with the command `snap connect k9s-nsg:kube-config`.
 

@@ -26,10 +26,7 @@ plugs:
     interface: personal-files
     read:
       - $HOME/.kube
-    write:
-      - $HOME/.kube/cache
-      - $HOME/.kube/http-cache
-  
+
 apps:
   k9s-nsg:
     command: bin/k9s-nsg
