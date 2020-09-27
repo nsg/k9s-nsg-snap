@@ -25,7 +25,20 @@ You will find K9s configuration in `$SNAP_USER_DATA/.k9s` (usually `~/snap/k9s-n
 
 ### Editor
 
-K9s will normally launch your default editor when you press edit (`e`), this is not possible at the moment due the security sandbox. This snap has not permission to communicate with arbitrary applications so I have bundled the popular editors "nano" and "nvim". Nano is the default choice because it's more user friendly, to change it to nvim type `snap set k9s-nsg editor=nvim`.
+You can change the default editor with `snap set k9s-nsg editor=<editor>`, the supported editors are:
+
+#### nano (default)
+
+Bundled inside the snap. Nano is a popular editor. Configured to display YAML nicely. This is the default option, to change back to this run `snap set k9s-nsg editor=nano`
+
+#### nvim (Neovim)
+
+Bundled inside the snap. VIM is an popular editor and so is the Neovim fork. Configured to display YAML nicely. To change to this, run `snap set k9s-nsg editor=nvim`
+
+
+#### External editor
+
+External editors installed on your system can be accessed by setting the editor to xdg-open (`snap set k9s-nsg editor=xdg-open`) this should open and dialog asking what application you like to use.
 
 ### KUBECONFIG
 
