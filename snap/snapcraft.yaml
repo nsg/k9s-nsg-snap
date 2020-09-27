@@ -33,6 +33,7 @@ apps:
     plugs:
       - kube-config
       - network
+      - desktop
 
 parts:
   detect-version:

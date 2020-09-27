@@ -1,6 +1,23 @@
 #!/bin/bash
 
+bold() {
+    local bold='\e[1m'
+    local nc='\e[0m'
+    echo -ne "${bold}$@${nc}"
+}
+
+write() {
+    echo -e "$@" | fold -sw $COLUMNS
+}
+
 E="$(snapctl get editor)"
 P="$(snapctl get editor-params)"
 
 $E $P $@
+
+if [[ $E == "xdg-open" ]]; then
+    write "An external application has opened the file $(bold $@)"
+    write "1. Edit it, save and close the file."
+    write "2. Then press [RETURN] to commit the changes."
+    read dummy
+fi
