@@ -8,6 +8,8 @@ else
     snapctl set editor-params="--rcfile $SNAP_DATA/.nanorc"
 fi
 
+mkdir -p $SNAP_USER_DATA/tmp
+
 cat << EOF > $SNAP_DATA/.nanorc
 set autoindent
 set historylog

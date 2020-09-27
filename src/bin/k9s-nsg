@@ -34,5 +34,6 @@ done
 
 export K9SCONFIG=$SNAP_USER_DATA/.k9s
 export EDITOR=$SNAP/bin/editor
+export TMPDIR=$SNAP_USER_DATA/tmp
 
 $SNAP/bin/k9s $@
