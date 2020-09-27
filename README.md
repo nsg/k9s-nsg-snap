@@ -17,10 +17,20 @@ Get the latest release from the edge channel with:
 
 * `snap install --edge k9s-nsg`
 
-The snap will read your configuration from `~/.kube`, you need to grant it access with the command `snap connect k9s-nsg:kube-config`.
+The snap will read your configuration from `~/.kube`, you may need to grant it access with the command `snap connect k9s-nsg:kube-config`.
 
 ## Configuration
 
 You will find K9s configuration in `$SNAP_USER_DATA/.k9s` (usually `~/snap/k9s-nsg/current/.k9s/`).
 
+### Editor
+
 K9s will normally launch your default editor when you press edit (`e`), this is not possible at the moment due the security sandbox. This snap has not permission to communicate with arbitrary applications so I have bundled the popular editors "nano" and "nvim". Nano is the default choice because it's more user friendly, to change it to nvim type `snap set k9s-nsg editor=nvim`.
+
+### KUBECONFIG
+
+`KUBECONFIG` works but you need to export it to be available inside the snap. If you have something like `KUBECONFIG=/my/path`, change that to `export KUBECONFIG=/my/path/` or just add `export KUBECONFIG` after that line. This is the recommended way for multiple configuration files. Note that due the sandbox all files need to be inside `~/.kube/`.
+
+### External commands
+
+The sandbox is nice for security but adds limitations. If you need to run external programs/binaries they need to be moved to `$SNAP_USER_DATA` (usually `~/snap/k9s-nsg/current/`) (note that the working directory for kubectl is `$SNAP_USER_DATA/.kube/`). This may or may not be possible. If this is a hard requirement for you this snap may not be working as intended. Feel free to open an issue if you like to discuss options.
