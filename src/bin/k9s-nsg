@@ -1,7 +1,11 @@
 #!/bin/bash
 
 find_a_file() {
-    find /home/$USER/.kube/ -maxdepth 1 -type f 2> /dev/null | head -1
+    local kube_path="/home/$USER/.kube/"
+    if [[ $USER == root ]]; then
+        kube_path="/root/.kube/"
+    if
+    find $kube_path -maxdepth 1 -type f 2> /dev/null | head -1
 }
 
 bold() {
