@@ -4,7 +4,7 @@ find_a_file() {
     local kube_path="/home/$USER/.kube/"
     if [[ $USER == root ]]; then
         kube_path="/root/.kube/"
-    if
+    fi
     find $kube_path -maxdepth 1 -type f 2> /dev/null | head -1
 }
 
