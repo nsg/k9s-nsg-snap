@@ -1,11 +1,12 @@
 #!/bin/bash
 
+KUBE_PATH="/home/$USER/.kube/"
+if [[ $USER == root ]]; then
+    KUBE_PATH="/root/.kube/"
+fi
+
 find_a_file() {
-    local kube_path="/home/$USER/.kube/"
-    if [[ $USER == root ]]; then
-        kube_path="/root/.kube/"
-    fi
-    find $kube_path -maxdepth 1 -type f 2> /dev/null | head -1
+    find $KUBE_PATH -maxdepth 1 -type f 2> /dev/null | head -1
 }
 
 bold() {
@@ -28,8 +29,8 @@ if [ ! -e "$(find_a_file)" ] || ! head "$(find_a_file)" 2>&1 > /dev/null; then
     exit 1
 fi
 
-# Scan /home/$USER/.kube/ for configuration files
-for config in /home/$USER/.kube/*; do
+# Scan $HOME/.kube/ for configuration files
+for config in ${KUBE_PATH}*; do
     if [ ! -d "$config" ] && grep -q apiVersion "$config"; then
         config_name="$(basename $config)"
         ln -sf "$config" "$SNAP_USER_DATA/.kube/$config_name"
