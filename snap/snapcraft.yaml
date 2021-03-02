@@ -33,6 +33,7 @@ apps:
     plugs:
       - kube-config
       - network
+      - network-bind
       - desktop
 
 parts:
